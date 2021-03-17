@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  mango1:
+    build: .
+    image: server
+    environment:
+      - APP=Mango
+    ports:
+      - "8081:5000"
+
+  mango2:
+    image: server
+    depends_on: 
+      - mango1
+    environment:
+      - APP=Mango
+    ports:
+      - "8082:5000"
+  
+  apple1:
+    image: server
+    depends_on:
+      - mango1
+    environment:
+      - APP=Apple
+    ports:
+      - "9081:5000"
+
+  apple2:
+    image: server
+    depends_on: 
+      - mango1
+    environment:
+      - APP=Apple
+    ports:
+      - "9082:5000"
+  
