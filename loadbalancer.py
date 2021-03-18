@@ -1,11 +1,23 @@
-from flask import Flask
+import random
+
+from flask import Flask, request
+import requests
+
+from constants import Backends
 
 loadbalancer = Flask(__name__)
 
 
 @loadbalancer.route('/')
 def router():
-    return 'hello'
+    host_header = request.headers.get('Host')
+    if host_header == 'www.mango.com':
+        response = requests.get(f'http://{random.choice(Backends.MANGO)}')
+    elif host_header == 'www.apple.com':
+        response = requests.get(f'http://{random.choice(Backends.APPLE)}')
+    else:
+        return 'Not Found', 404
+    return response.content, response.status_code
 
 
 if __name__ == '__main__':
