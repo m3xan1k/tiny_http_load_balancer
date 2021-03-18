@@ -20,5 +20,17 @@ def router():
     return response.content, response.status_code
 
 
+@loadbalancer.route('/mango')
+def mango_path():
+    response = requests.get(f'http://{random.choice(Backends.MANGO)}')
+    return response.content, response.status_code
+
+
+@loadbalancer.route('/apple')
+def apple_path():
+    response = requests.get(f'http://{random.choice(Backends.APPLE)}')
+    return response.content, response.status_code
+
+
 if __name__ == '__main__':
     loadbalancer.run(host='0.0.0.0')
